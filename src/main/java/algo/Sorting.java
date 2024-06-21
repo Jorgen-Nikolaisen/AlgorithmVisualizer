@@ -34,16 +34,19 @@ public class Sorting {
         return false;
     }
 
-    public void insertionSort(){
-        for(int i = 1; i < vals.size(); i++){
-            int key = vals.get(i);
-            int j = i - 1;
-            while(j >= 0 && key < vals.get(j)){
+    public boolean insertionSortStep(){
+        if(currentIndex <  vals.size()){
+            int key = vals.get(currentIndex);
+            int j = currentIndex - 1;
+            while(j >= 0 && vals.get(j) > key){
                 vals.set(j + 1, vals.get(j));
-                j = j - 1;
+                j--;
             }
             vals.set(j + 1, key);
+            currentIndex++;
+            return true;
         }
+        return false;
 
     }
 
