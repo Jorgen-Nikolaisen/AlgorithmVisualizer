@@ -34,6 +34,20 @@ public class Sorting {
         return false;
     }
 
+    public void insertionSort(){
+        for(int i = 1; i < vals.size(); i++){
+            int key = vals.get(i);
+            int j = i - 1;
+            while(j >= 0 && key < vals.get(j)){
+                vals.set(j + 1, vals.get(j));
+                j = j - 1;
+            }
+            vals.set(j + 1, key);
+        }
+
+    }
+
+
     public List<Integer> getVals(){
         return vals;
     }
