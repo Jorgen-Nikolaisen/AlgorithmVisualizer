@@ -7,4 +7,5 @@
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.visu.SortingController" spacing="10" alignment="CENTER">
     <Canvas fx:id="canvas" width="800" height="600" />
     <Button fx:id="startButton" text="Start Sorting" onAction="#startSorting"/>
+    <Button fx:id="startInsertionButton" text="Start Insertion Sort" onAction="#startInsertionSort"/>
 </VBox>

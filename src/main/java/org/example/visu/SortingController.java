@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -27,41 +28,60 @@ public class SortingController {
 
     @FXML
     public void initialize() {
-        values = generateRandomValues(50);
+        values = generateRandomValues(10);
         sorting = new Sorting(values);
-        drawValues();
+        drawValues(-1, -1);
     }
 
     @FXML
     public void startSorting(){
+        sorting.setInsertionSort(false);
+        int[] indices = new int[2];
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
-            if(sorting.bubbleSortStep()) {
-                drawValues();
+            if(sorting.bubbleSortStep(indices)) {
+                drawValues(indices[0], indices[1]);
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
 
-    private void drawValues() {
+    @FXML
+    public void startInsertionSort(){
+        sorting.setInsertionSort(true);
+        int[] indices = new int[2];
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), event -> {
+            if(sorting.insertionSortStep(indices)){
+                drawValues(indices[0], indices[1]);
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    private void drawValues(int current, int next) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        double width = canvas.getWidth() / values.size();
-        double heightFactor = canvas.getHeight() / 100.0;
+        double squareSize = canvas.getWidth() / values.size();
 
         for (int i = 0; i < values.size(); i++) {
-            double height = values.get(i) * heightFactor;
-            double x = i * width;
-            double y = canvas.getHeight() - height;
-            if(i % 2 == 0){
+            double x = i * squareSize;
+            double y = canvas.getHeight() - squareSize;
+            gc.setFill(Color.LIGHTBLUE);
+            if (i == current) {
+                gc.setFill(Color.RED);
+            }
+            if (i == next) {
                 gc.setFill(Color.BLUE);
             }
-            else gc.setFill(Color.DARKRED);
-            gc.fillRect(x, y, width, height);
-            gc.setFill(Color.WHITE);
-            gc.fillText(String.valueOf(values.get(i)), x + width / 2 - 10, y + height / 2);
+            gc.fillRect(x, y, squareSize, squareSize);
+            gc.setStroke(Color.GREEN);
+            gc.strokeRect(x, y, squareSize, squareSize);
+            gc.setFill(Color.BLACK);
+            gc.fillText(String.valueOf(values.get(i)), x + squareSize / 2 - 10, y + squareSize / 2);
         }
     }
+
 
 
     private List<Integer> generateRandomValues(int count){
